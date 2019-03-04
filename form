@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/css/uikit.min.css" />
+
+    <!-- UIkit JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit-icons.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <div class="wrapper">
+        <h2 class="uk-heading-divider">TEST FORM</h2>
+        <form>
+            <div class="uk-grid">
+                <div class="uk-width-1-4">
+                    <input v-model="formData.name.value" class="uk-input uk-form-width-medium field1" :class="{'uk-form-danger' : !formData.name.state}" type="text" placeholder="Name">
+                </div>
+                <div class="uk-width-1-4">
+                    <input v-model="formData.surname.value" class="uk-input uk-form-width-medium field2" :class="{'uk-form-danger' : !formData.surname.state}" type="text" placeholder="Surname">
+                </div>
+                <div class="uk-width-1-4">
+                    <input v-model="formData.age.value" class="uk-input uk-form-width-medium field3" :class="{'uk-form-danger' : !formData.age.state}" type="number" min="1" placeholder="Age">
+                </div>
+                <div class="uk-width-1-4">
+                    <select class="uk-select field4">
+                        <option>LV</option>
+                        <option>EN</option>
+                        <option>RU</option>
+                    </select>
+                </div>
+            </div>
+            <div class="uk-grid">
+                <div class="uk-width-1-1">
+                    <textarea class="uk-textarea field5" placeholder="Tell about yourself"></textarea>
+                </div>
+            </div>
+            <div class="uk-grid">
+                <div class="uk-width-1-5">
+                    <button @click="validForm()" type="button" class="uk-button uk-button-primary">VALID</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="badWayModal" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Error!</h2>
+            <p>Sorry, your form is wrong!</p>
+            <p class="uk-text-right">
+                <button class="uk-button uk-button-danger uk-modal-close" type="button">Close</button>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<style>
+    .wrapper {
+        width: 50%;
+        margin: 0 auto;
+        margin-top: 10px;
+    }
+    .wrapper h2 {
+        text-align: center;
+    }
+    .field1 {
+        box-shadow: 1px 1px 1px 1px #ccc;
+    }
+    .field2 {
+        border-radius: 50px;
+    }
+    .field3 {
+        background-color : #eeeeee;
+    }
+</style>
+
+<script>
+    const App = new Vue({
+        el: "#app",
+        data: {
+            formData: {
+                name: {value: '', state: true},
+                surname: {value: '', state: true},
+                age: {value: null, state: true}
+            }
+        },
+        methods: {
+            validForm: function () {
+                var self = this;
+                var state = true;
+                $.each(this.formData, function (index, data) {
+                    data.state = true;
+                    if (data.value === '' || typeof data.value === 'undefined' || data.value === null){
+                        data.state = false;
+                        state = false;
+                    }
+                })
+                if (state)
+                    UIkit.notification('Thank you for join us, ' + this.    formData.name.value);
+                UIkit.modal('#badWayModal').show();
+
+            },
+        },
+
+    });
+</script>
